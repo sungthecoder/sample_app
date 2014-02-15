@@ -34,7 +34,7 @@ describe "User Pages" do
       describe "as an admin user" do
         let(:admin) { FactoryGirl.create(:admin) }
 
-        describe "when visiting index page" do
+        describe "when visiting index page"
           before do
             sign_in admin
             visit users_path
@@ -48,14 +48,15 @@ describe "User Pages" do
           end
           it { should_not have_link('delete', href: user_path(admin)) }
         end
+      end
 
-        describe "in the Users conteroller" do
-          describe "admin user" do
-            before { sign_in admin, no_capybara: true }
-            it "should not be able to delete itself" do
-              expect { delete user_path(admin) }.
-                not_to change(User, :count).by(-1)
-            end
+      describe "in the Users conteroller" do
+        describe "delete its own user" do
+          before { sign_in admin, no_capybara: true }
+          it "should not be able to delete itself" do
+            expect do
+              delete user_path(admin)
+            end.not_to change(User, :count).by(-1)
           end
         end
       end
